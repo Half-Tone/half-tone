@@ -1,7 +1,11 @@
 Rails.application.routes.draw do
 
   namespace :admin do
+    resources :books
+    resources :chapters
+    resources :pages
   end
+
   # mount Fae below your admin namespec
   mount Fae::Engine => '/admin'
 

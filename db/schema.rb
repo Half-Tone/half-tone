@@ -10,22 +10,40 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171013150620) do
+ActiveRecord::Schema.define(version: 20171114223853) do
 
-  create_table "fae_changes", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+  enable_extension "uuid-ossp"
+
+  create_table "books", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.string   "title"
+    t.integer  "order"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "chapters", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.string   "title"
+    t.integer  "order"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "fae_changes", force: :cascade do |t|
     t.integer  "changeable_id"
     t.string   "changeable_type"
     t.integer  "user_id"
     t.string   "change_type"
-    t.text     "updated_attributes", limit: 65535
-    t.datetime "created_at",                       null: false
-    t.datetime "updated_at",                       null: false
+    t.text     "updated_attributes"
+    t.datetime "created_at",         null: false
+    t.datetime "updated_at",         null: false
     t.index ["changeable_id"], name: "index_fae_changes_on_changeable_id", using: :btree
     t.index ["changeable_type"], name: "index_fae_changes_on_changeable_type", using: :btree
     t.index ["user_id"], name: "index_fae_changes_on_user_id", using: :btree
   end
 
-  create_table "fae_files", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "fae_files", force: :cascade do |t|
     t.string   "name"
     t.string   "asset"
     t.string   "fileable_type"
@@ -42,7 +60,7 @@ ActiveRecord::Schema.define(version: 20171013150620) do
     t.index ["fileable_type", "fileable_id"], name: "index_fae_files_on_fileable_type_and_fileable_id", using: :btree
   end
 
-  create_table "fae_images", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "fae_images", force: :cascade do |t|
     t.string   "name"
     t.string   "asset"
     t.string   "imageable_type"
@@ -61,7 +79,7 @@ ActiveRecord::Schema.define(version: 20171013150620) do
     t.index ["imageable_type", "imageable_id"], name: "index_fae_images_on_imageable_type_and_imageable_id", using: :btree
   end
 
-  create_table "fae_options", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "fae_options", force: :cascade do |t|
     t.string   "title"
     t.string   "time_zone"
     t.string   "colorway"
@@ -73,14 +91,14 @@ ActiveRecord::Schema.define(version: 20171013150620) do
     t.index ["singleton_guard"], name: "index_fae_options_on_singleton_guard", unique: true, using: :btree
   end
 
-  create_table "fae_roles", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "fae_roles", force: :cascade do |t|
     t.string   "name"
     t.integer  "position"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  create_table "fae_static_pages", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "fae_static_pages", force: :cascade do |t|
     t.string   "title"
     t.integer  "position",   default: 0
     t.boolean  "on_stage",   default: true
@@ -91,12 +109,12 @@ ActiveRecord::Schema.define(version: 20171013150620) do
     t.index ["slug"], name: "index_fae_static_pages_on_slug", using: :btree
   end
 
-  create_table "fae_text_areas", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "fae_text_areas", force: :cascade do |t|
     t.string   "label"
-    t.text     "content",          limit: 65535
-    t.integer  "position",                       default: 0
-    t.boolean  "on_stage",                       default: true
-    t.boolean  "on_prod",                        default: false
+    t.text     "content"
+    t.integer  "position",         default: 0
+    t.boolean  "on_stage",         default: true
+    t.boolean  "on_prod",          default: false
     t.integer  "contentable_id"
     t.string   "contentable_type"
     t.string   "attached_as"
@@ -110,7 +128,7 @@ ActiveRecord::Schema.define(version: 20171013150620) do
     t.index ["position"], name: "index_fae_text_areas_on_position", using: :btree
   end
 
-  create_table "fae_text_fields", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "fae_text_fields", force: :cascade do |t|
     t.string   "contentable_type"
     t.integer  "contentable_id"
     t.string   "attached_as"
@@ -128,7 +146,7 @@ ActiveRecord::Schema.define(version: 20171013150620) do
     t.index ["position"], name: "index_fae_text_fields_on_position", using: :btree
   end
 
-  create_table "fae_users", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "fae_users", force: :cascade do |t|
     t.string   "email",                  default: "", null: false
     t.string   "encrypted_password",     default: "", null: false
     t.string   "reset_password_token"
@@ -158,6 +176,13 @@ ActiveRecord::Schema.define(version: 20171013150620) do
     t.index ["reset_password_token"], name: "index_fae_users_on_reset_password_token", unique: true, using: :btree
     t.index ["role_id"], name: "index_fae_users_on_role_id", using: :btree
     t.index ["unlock_token"], name: "index_fae_users_on_unlock_token", unique: true, using: :btree
+  end
+
+  create_table "pages", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.string   "display"
+    t.integer  "order"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
 end

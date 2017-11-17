@@ -39,6 +39,9 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'spring-watcher-listen', '~> 2.0.0'
   spec.add_development_dependency 'pry-byebug'
   spec.add_development_dependency 'puma', '~> 3.0'
+  spec.add_development_dependency 'factory_bot_rails'
+  spec.add_development_dependency 'factory_bot'
+  spec.add_runtime_dependency 'react-rails'
   spec.add_runtime_dependency "rails", "~> 5.0.0"
   spec.add_runtime_dependency 'turbolinks-source', '~> 5'
   spec.add_runtime_dependency 'turbolinks', '~> 5'
@@ -48,5 +51,5 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency 'uglifier', '>= 1.3.0'
   spec.add_runtime_dependency 'coffee-rails', '~> 4.2'
   spec.add_runtime_dependency "fae-rails", "~> 1.6"
-  spec.add_development_dependency 'mysql2'
+  spec.add_runtime_dependency 'pg'
 end

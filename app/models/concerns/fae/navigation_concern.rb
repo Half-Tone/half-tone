@@ -25,6 +25,9 @@ module Fae
 
     def structure
       [
+        item('Pages', path: admin_pages_path),
+        item('Chapters', path: admin_chapters_path),
+        item('Books', path: admin_books_path),
         # scaffold inject marker
       ]
     end
