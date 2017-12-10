@@ -52,4 +52,6 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency 'coffee-rails', '~> 4.2'
   spec.add_runtime_dependency "fae-rails", "~> 1.6"
   spec.add_runtime_dependency 'pg'
+  spec.add_runtime_dependency 'acts_as_commentable_with_threading'
+  spec.add_runtime_dependency 'sluggi'
 end
